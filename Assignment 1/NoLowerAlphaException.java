@@ -1,8 +1,8 @@
 
 public class NoLowerAlphaException extends Exception {
 
-	public NoLowerAlphaException(String password)
+	public NoLowerAlphaException()
 	{
-		super(password);
+		super("Error: The password must contain at least one lowercase alphabetic character!");
 	}
 }

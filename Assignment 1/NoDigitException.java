@@ -1,9 +1,9 @@
 
 public class NoDigitException extends Exception {
 
-	public NoDigitException(String password)
+	public NoDigitException()
 	{
-		super(password);
+		super("Error: The password must contain at least one digit!");
 	}
 
 }

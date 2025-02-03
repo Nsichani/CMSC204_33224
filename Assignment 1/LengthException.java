@@ -1,8 +1,8 @@
 
 public class LengthException extends Exception {
 
-	public LengthException(String password)
+	public LengthException()
 	{
-		super(password);
+		super("Error: The password must be at least 6 characters long!");
 	}
 }

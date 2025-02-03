@@ -1,8 +1,8 @@
 
 public class NoSpecialCharacterException extends Exception {
 
-	public NoSpecialCharacterException(String password)
+	public NoSpecialCharacterException()
 	{
-		super(password);
+		super("Error: The password must contain at least one special character!");
 	}
 }

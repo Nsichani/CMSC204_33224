@@ -8,9 +8,9 @@
 
 public class UnmatchedException extends RuntimeException
 {
-	public UnmatchedException(String password)
+	public UnmatchedException()
 	{
-		super(password);
+		super("Error: The passwords do not match!");
 	}
 
 	
