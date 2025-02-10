@@ -10,7 +10,7 @@ public class UnmatchedException extends RuntimeException
 {
 	public UnmatchedException()
 	{
-		super("Error: The passwords do not match!");
+		super("Passwords do not match");
 	}
 
 	

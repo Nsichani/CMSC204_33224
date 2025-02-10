@@ -239,7 +239,7 @@ public class PasswordCheckerUtility
 	
 	public static boolean hasBetweenSixAndNineChars(String password)
 	{
-		if(password.length() < 6 || password.length() > 9)
+		if(password.length() >= 6 || password.length() <= 9)
 		{
 			return true;
 		}
@@ -249,28 +249,69 @@ public class PasswordCheckerUtility
 	
 	// isWeakPassword method to check to see if the password is weak or not.
 	
-	public static boolean isWeakPassword(String password) throws WeakPasswordException
+	public static boolean isWeakPassword(String password) throws WeakPasswordException, LengthException, NoUpperAlphaException, NoLowerAlphaException, NoDigitException, NoSpecialCharacterException, InvalidSequenceException
 	{
-		try {
-			if(isValidPassword(password) && !hasBetweenSixAndNineChars(password))
-			{
-				return false;
-			
-			}
-		} catch (LengthException | NoUpperAlphaException | NoLowerAlphaException | NoDigitException
-				| NoSpecialCharacterException | InvalidSequenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if(isValidPassword(password) == true && hasBetweenSixAndNineChars(password) == true)
+		{
+			throw new WeakPasswordException();
+		}
+		else //if(isValidPassword(password) && hasBetweenSixAndNineChars(password) == false)
+		{
+			return false;
 		}
 		
-		throw new WeakPasswordException();
+		//return true;
+//		
+		
+//		try {
+//			if(isValidPassword(password) && hasBetweenSixAndNineChars(password) == false)
+//			{
+//				return false;
+//				
+//			}
+//		} catch (LengthException | NoUpperAlphaException | NoLowerAlphaException | NoDigitException
+//				| NoSpecialCharacterException | InvalidSequenceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		throw new WeakPasswordException();
+//		
+//		
 	}
 	
 	// getInvalidPasswords method will accept an ArrayList of passwords as the parameter and return an ArrayList with the status of any invalid passwords.
 	
 	public static ArrayList<String> getInvalidPasswords(ArrayList<String> passwords)
 	{
+		// Creating an array list
 		
+		ArrayList<String> invalidPasswords = new ArrayList<>();
+		
+		// Going through the whole list
+		
+		for(int i = 0; i < passwords.size(); i++)
+		{
+			
+			String passwordAtIndex = passwords.get(i);
+		
+			try 
+			{
+				isValidPassword(passwordAtIndex);
+			} 
+			catch (LengthException | NoUpperAlphaException | NoLowerAlphaException | NoDigitException | NoSpecialCharacterException | InvalidSequenceException e)
+			{
+				// TODO Auto-generated catch block
+				//invalidPasswords.add(passwordAtIndex);
+				invalidPasswords.add(passwordAtIndex + " " + e.getMessage());
+			}
+			
+		}
+		
+		// Returning invalid passwords
+		
+		return invalidPasswords;
 	}
 }
 
