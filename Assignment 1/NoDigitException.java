@@ -1,5 +1,5 @@
 
-public class NoDigitException extends RunTimeException {
+public class NoDigitException extends RuntimeException {
 
 	public NoDigitException()
 	{
