@@ -1,5 +1,5 @@
 
-public class LengthException extends RunTimeException {
+public class LengthException extends RuntimeException {
 
 	public LengthException()
 	{
