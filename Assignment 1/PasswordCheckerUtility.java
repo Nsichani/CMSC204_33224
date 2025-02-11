@@ -256,29 +256,11 @@ public class PasswordCheckerUtility
 		{
 			throw new WeakPasswordException();
 		}
-		else //if(isValidPassword(password) && hasBetweenSixAndNineChars(password) == false)
+		else 
 		{
 			return false;
 		}
-		
-		//return true;
-//		
-		
-//		try {
-//			if(isValidPassword(password) && hasBetweenSixAndNineChars(password) == false)
-//			{
-//				return false;
-//				
-//			}
-//		} catch (LengthException | NoUpperAlphaException | NoLowerAlphaException | NoDigitException
-//				| NoSpecialCharacterException | InvalidSequenceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		throw new WeakPasswordException();
-//		
-//		
+
 	}
 	
 	// getInvalidPasswords method will accept an ArrayList of passwords as the parameter and return an ArrayList with the status of any invalid passwords.
