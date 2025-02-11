@@ -1,5 +1,5 @@
 
-public class WeakPasswordException extends Exception 
+public class WeakPasswordException extends RunTimeException 
 {
 	public WeakPasswordException()
 	{
