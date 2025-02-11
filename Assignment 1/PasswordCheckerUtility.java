@@ -239,7 +239,7 @@ public class PasswordCheckerUtility
 	
 	public static boolean hasBetweenSixAndNineChars(String password)
 	{
-		if(password.length() >= 6 || password.length() <= 9)
+		if(password.length() >= 6 && password.length() <= 9)
 		{
 			return true;
 		}
