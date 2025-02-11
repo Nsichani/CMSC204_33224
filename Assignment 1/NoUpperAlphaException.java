@@ -1,5 +1,5 @@
 
-public class NoUpperAlphaException extends RunTimeException 
+public class NoUpperAlphaException extends RuntimeException 
 {
 	public NoUpperAlphaException()
 	{
