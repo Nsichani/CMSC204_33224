@@ -1,5 +1,5 @@
 
-public class InvalidSequenceException extends Exception {
+public class InvalidSequenceException extends RunTimeException {
 
 	public InvalidSequenceException()
 	{
