@@ -1,5 +1,5 @@
 
-public class NoSpecialCharacterException extends Exception {
+public class NoSpecialCharacterException extends RunTimeException {
 
 	public NoSpecialCharacterException()
 	{
