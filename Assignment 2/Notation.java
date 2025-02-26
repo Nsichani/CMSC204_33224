@@ -37,6 +37,17 @@ public class Notation
 			{
 				stack1.push(currentChar);
 			}
+
+			switch(currentChar)
+			{
+				case '+':
+				case '-':
+				case '/':
+				case '*':
+					
+					
+			}
+				
 			
 			
 			
