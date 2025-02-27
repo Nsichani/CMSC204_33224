@@ -182,7 +182,7 @@ Let me know if you need further clarification or adjustments!
 			
 			if(currentChar == ')') // if the character is a right parenthesis...
 			{
-				if(stack1.isEmpty()) // making sure stack isn't empty and if so throwing an exception
+				if(stack1.isEmpty() || stack1.top() != '(') // making sure stack isn't empty and if so throwing an exception
 				{
 					throw new InvalidNotationFormatException();
 				}
