@@ -64,8 +64,15 @@ public class MyQueue<T> implements QueueInterface<T>
 	@Override
 	public String toString() 
 	{
+		StringBuilder connector = new StringBuilder();
+		
+		for(int i = 0; i < size(); i++)
+		{
+			connector.append(this.queue1.get(i));
+		}
+		
 		// TODO Auto-generated method stub
-		return this.queue1.toString(); // using the premade java .toString to return the queue as a string
+		return connector.toString();
 	}
 	
 	@Override
