@@ -172,7 +172,7 @@ Let me know if you need further clarification or adjustments!
 			
 			if(currentChar == '+' || currentChar == '-'  || currentChar == '/' || currentChar == '*')
 			{
-				while(!stack1.isEmpty() && precedence(currentChar) >= precedence((char)stack1.top()))
+				while(!stack1.isEmpty() && precedence(currentChar) > precedence((char)stack1.top()))
 				{
 					queue1.enqueue(stack1.pop());
 				}
@@ -182,14 +182,20 @@ Let me know if you need further clarification or adjustments!
 			
 			if(currentChar == ')') // if the character is a right parenthesis...
 			{
-				if(stack1.isEmpty() || stack1.top() != '(') // making sure stack isn't empty and if so throwing an exception
+				if(stack1.isEmpty())
 				{
 					throw new InvalidNotationFormatException();
 				}
 				
-				while(stack1.top() != '(')  // Popping operators from the top of the stack until a left parenthesis is left at the top.
+				
+				while(!stack1.isEmpty() && stack1.top() != '(')  // Popping operators from the top of the stack until a left parenthesis is left at the top.
 				{
 					queue1.enqueue(stack1.pop());
+				}
+				
+				if(stack1.isEmpty())
+				{
+					throw new InvalidNotationFormatException();
 				}
 				
 				stack1.pop(); // Popping the left parenthesis from the stack.
@@ -200,6 +206,11 @@ Let me know if you need further clarification or adjustments!
 		
 		while(!stack1.isEmpty()) // While the infix has been read and not empty popping operators and inserting them into the queue
 		{
+			if(stack1.top() == '(')
+			{
+				throw new InvalidNotationFormatException();
+			}
+			
 			queue1.enqueue(stack1.pop());
 		}
 		
