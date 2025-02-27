@@ -8,20 +8,26 @@ public class MyQueue<T> implements QueueInterface<T>
 	// https://www.geeksforgeeks.org/when-to-use-queue-over-arraylist-in-java/
 	
 	private ArrayList<T> queue1;
-	private int size = 50;
+	private int size;
+	
+	public MyQueue(int size) {
+		
+		this.size = size;
+		this.queue1 = new ArrayList<>(); 
+    }
 	
 	@Override
 	public boolean isEmpty() 
 	{
 		// TODO Auto-generated method stub
-		return queue1.isEmpty(); // using the premade java .isEmpty to see if there is nothing in the queue
+		return this.queue1.isEmpty(); // using the premade java .isEmpty to see if there is nothing in the queue
 	}
 
 	@Override
 	public boolean isFull() 
 	{
 		// TODO Auto-generated method stub
-		return (queue1.size() >= size);  // using the premade java .size to see if the queue has surpassed the size 50.
+		return (this.queue1.size() >= this.size);  // using the premade java .size to see if the queue has surpassed the size 50.
 	} 
 
 	@Override
@@ -32,8 +38,8 @@ public class MyQueue<T> implements QueueInterface<T>
 			throw new QueueUnderflowException();
 		}
 		
-		T removedItem = queue1.get(0);
-		queue1.remove(0);
+		T removedItem = this.queue1.get(0);
+		this.queue1.remove(0);
 		return removedItem;
 	}
 
@@ -41,39 +47,46 @@ public class MyQueue<T> implements QueueInterface<T>
 	public int size() 
 	{
 		// TODO Auto-generated method stub
-		return queue1.size(); // using the premade java .size to return the size of the queue
+		return this.queue1.size(); // using the premade java .size to return the size of the queue
 	}
 
 	@Override
 	public boolean enqueue(T e) throws QueueOverflowException 
 	{
-		if(isEmpty())
+		if(isFull())
 		{
 			throw new QueueOverflowException();
 		}
 		
-		return queue1.add(e);
+		return this.queue1.add(e);
 	}
 
 	@Override
 	public String toString() 
 	{
 		// TODO Auto-generated method stub
-		return queue1.toString(); // using the premade java .toString to return the queue as a string
+		return this.queue1.toString(); // using the premade java .toString to return the queue as a string
 	}
 	
 	@Override
 	public String toString(String delimiter) 
 	{
+		StringBuilder connector = new StringBuilder();
+		
+		for(int i = 0; i < size(); i++)
+		{
+			connector.append(this.queue1.get(i));
+		}
+		
 		// TODO Auto-generated method stub
-		return null;
+		return connector.toString();
 	}
 
 	@Override
 	public void fill(ArrayList<T> list) 
 	{
 		// TODO Auto-generated method stub
-		queue1.addAll(list); // using the premade java .addAll to add the passed list to the queue
+		this.queue1.addAll(list); // using the premade java .addAll to add the passed list to the queue
 		
 	}
 
