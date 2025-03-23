@@ -4,9 +4,16 @@ public class BasicDoubleLinkedList<T>
 {
 	// Variables
 	
-	private Node head;
-	private Node tail;
-	private int size;
+	public Node<T> head;
+	protected Node<T> tail;
+	public int size;
+	
+	public BasicDoubleLinkedList() 
+	{
+		this.head = null;
+		this.tail = null;
+		int size = 0;
+	}
 	
 	// getSize() method to return the size of the list
 	
@@ -57,14 +64,14 @@ public class BasicDoubleLinkedList<T>
 	
 	public T getFirst()
 	{
-		return (T) head.data;
+		return  head.data;
 	}
 	
 	// getLast() method returns the last value in the list
 	
 	public T getLast()
 	{
-		return (T) tail.data;
+		return tail.data;
 	}
 	
 	// iterator() method that returns the inner iterator class
@@ -77,17 +84,46 @@ public class BasicDoubleLinkedList<T>
 	
 	// remove() method that removes the first instance of the target data
 	
-	public BasicDoubleLinkedList.Node<T> remove (T targetData, Comparator<T> comparator)
+
+	public Node<T> remove (T targetData, Comparator<T> comparator)
 	{
-		return null;
-		
+		 Node<T> current = head;
+		 
+		 for(current = head; current != null; current = current.next) // going through the list
+		 {
+			 if(comparator.compare(targetData, current.data) == 0) // if the data is found then removing it
+			 {
+				 if(current == head) // if its the head value
+				 {
+					 head = head.next; // moving head to the next value aka removing current head pointer
+					 head.prev = null;
+				 }
+			 }
+			 else if (current == tail) // if tail value 
+			 {
+				 tail = tail.prev; // moving tail to previous value and losing pointer to current tail
+				 tail.next = null;
+			 }
+			 else // removing the value from the middle if that is where its located
+			 {
+				 current.prev.next = current.next;
+	             current.next.prev = current.prev;
+			 }
+			 
+			 size--;  // Decrementing size
+	         return current;  
+		 }
+		 
+		 return null; // if i can't find anything returning null
+	
 	}
 	
 	// retrieveFirstElement() method returns the first value in the list and removes it
 	
 	public T retrieveFirstElement()
 	{
-		T data = (T) head.data; // assigning the data to the head value
+		
+		T data = head.data; // assigning the data to the head value
 		head = head.next; // moving head to the next node (essentially getting rid of the current head)
 		
 		size--; // decrement the size
@@ -99,11 +135,26 @@ public class BasicDoubleLinkedList<T>
 	
 	public T retrieveLastElement()
 	{
-		T data = (T) tail.data; // assigning the data to the tail value
-		tail = tail.prev; // moving tail to the previous node (essentially getting rid of the current tail)
-		
-		size--; // decrement the size
-		return data; // returning the old tail prior to removal
+		if(tail != null)
+		{
+			Node<T> tailData = tail;
+			
+			if(tail.prev != null)
+			{
+				tail = tail.prev;
+				tail.next = null;
+			}
+			else
+			{
+				head = tail = null;
+			}
+			
+			return tailData.data;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	// toArrayList() method that converts the list to an array list
@@ -111,11 +162,11 @@ public class BasicDoubleLinkedList<T>
 	public ArrayList<T> toArrayList()
 	{
 		ArrayList<T> toString = new ArrayList(); // creating a  list to hold all the values
-		Node current = head; // starting at the head for the loop
+		Node<T> current = head; // starting at the head for the loop
 		
-		while(head.next != null)
+		while(current != null)
 		{
-			toString.add((T) current.data); // adding the current node to the list
+			toString.add(current.data); // adding the current node to the list
 			current = current.next; // moving it to the next node
 		}
 		
@@ -136,8 +187,8 @@ public class BasicDoubleLinkedList<T>
         public Node(T dataNode)
         {
             this.data = dataNode;
-            this.next = next;
-            this.prev = prev;
+            this.next = null;
+            this.prev = null;
         }
     }
     
@@ -146,6 +197,7 @@ public class BasicDoubleLinkedList<T>
     public  class DoubleLinkedListIterator  implements ListIterator<T>
     {
         private Node<T> current; // node to store data currently
+        
         
         // Constructor
         
@@ -181,23 +233,29 @@ public class BasicDoubleLinkedList<T>
         
         public boolean hasPrevious()
         {
-            return current != null && current.prev != null;
+        	if(current != null && current.prev != null)
+        	{
+        		return false;
+        	}
+        	else
+        	{
+        		return true;
+        	}
         }
         
         // next() method to move onto the previous node/position in the list
         
         public T previous() throws NoSuchElementException
         {
-            if(!hasPrevious())
-            {
-                throw new NoSuchElementException();
-            }
-            else
-            {
-            	T data =  current.data;
-                current = current.prev;
-                return data;
-            }
+        	 if(!hasPrevious())
+             {
+                 throw new NoSuchElementException();
+             }
+             else
+             {
+                 current =  current.prev;
+                 return current.data;
+             }
         }
         
         // All methods that come with the ListIterator that do not need to be implemented as per project guidelines/directions. 
