@@ -26,7 +26,7 @@ public class CourseDBStructure extends Object implements CourseDBStructureInterf
 	public void add(CourseDBElement element) {
 		// TODO Auto-generated method stub
 		
-		int tableSlot = element.hashCode(); // Getting the hashCode for the element provided
+		int tableSlot = element.hashCode() % getTableSize(); // Getting the hashCode for the element provided
 		
 		if(table[tableSlot] == null) // If the location doesn't exist creating a LinkedList and adding the hashCode
 		{
