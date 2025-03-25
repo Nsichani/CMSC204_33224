@@ -17,7 +17,9 @@ public class CourseDBStructure extends Object implements CourseDBStructureInterf
 	
 	public CourseDBStructure(int num)
 	{
-		table = new LinkedList[num];
+		int loadFactoredNum = num / 1.5;
+		int tableSize = get4kPrime(loadFactoredNum);
+		table = new LinkedList[tableSize];
 	}
 
 	@Override
