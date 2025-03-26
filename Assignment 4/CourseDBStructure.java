@@ -17,57 +17,69 @@ public class CourseDBStructure extends Object implements CourseDBStructureInterf
 	
 	public CourseDBStructure(int num)
 	{
-		int loadFactoredNum = num / 1.5;
-		int tableSize = get4kPrime(loadFactoredNum);
-		table = new LinkedList[tableSize];
+		int divdedByLoadFactor = (int) (num / 1.5); // Using the load factor to get an estimated/approximate size
+		int newNum = get4KPrime(divdedByLoadFactor); // Using the get4kPrime method to get the prime method for the estimated/approximate size to ensure safety
+		table = new LinkedList[newNum]; // Making the number found the table size.
 	}
 
 	@Override
 	public void add(CourseDBElement element) {
 		// TODO Auto-generated method stub
 		
-		int tableSlot = element.hashCode() % getTableSize(); // Getting the hashCode for the element provided
+		int tableSlot = element.hashCode() % table.length; // Getting the hashCode for the element provided
 		
-		if(table[tableSlot] == null) // If the location doesn't exist creating a LinkedList and adding the hashCode
+		if(table[tableSlot] == null) // If the location doesn't exist... 
 		{
-			table[tableSlot] = new LinkedList<CourseDBElement>();
-			table[tableSlot].add(element);
+			table[tableSlot] = new LinkedList<CourseDBElement>(); // creating a new LinkedList
+			table[tableSlot].add(element); // Adding the element into the LinkedList.
+			return; // Jumping out of the add method earlier since we already added the element and do not want to overload it.
 		}
-		else
+//		else
+//		{
+//			 if (table[tableSlot].contains(element))
+//			 {
+//				 return;
+//			 }
+//			 else
+//			 {
+//				 table[tableSlot].add(element);
+//			 }
+//		}
+		
+		for(int i = 0; i < table[tableSlot].size(); i++) // If it does exist...
 		{
-			table[tableSlot].add(element); // If it already exists adding it automatically.
+			if(table[tableSlot].get(i).getCRN() == element.getCRN()) // Locating it based on the CRN. If a duplicate is found...
+			{
+				table[tableSlot].set(i, element); // replacing the existing one with the new one
+				return; // jumping out of the add method early since we already added the element and do not want to overload.
+			}
 		}
+		
+	//	table[tableSlot].add(element); // Adding the element now the LinkedList if it 
 		
 	}
-	
-	/**
-	 * @return an array list of string representation of each course in 
-	 * the data structure separated by a new line. 
-	 * Refer to the following example:
-	 * Course:CMSC500 CRN:39999 Credits:4 Instructor:Nobody InParticular Room:SC100
-	 * Course:CMSC600 CRN:4000 Credits:4 Instructor:Somebody Room:SC200
-	 */
 	
 	@Override
 	public ArrayList<String> showAll() 
 	{
 		// TODO Auto-generated method stub
 		
-		ArrayList<String> wholeDataBase = new ArrayList<String>();
+		ArrayList<String> wholeDataBase = new ArrayList<String>(); // Creating an ArrayList
 		
-		for(int i = 0; i < table.length; i++)
+		for(int i = 0; i < table.length; i++) // Going through the whole table
 		{
-			if(table[i] != null)
+			if(table[i] != null) // Making sure there is a value at the current table position
 			{
-				for(int j = 0; j < table[i].size(); j++)
+				for(int j = 0; j < table[i].size(); j++) // going through the linked lists of the table
 				{
-					CourseDBElement element = table[i].get(j);
-					wholeDataBase.add(element.toString());
+					wholeDataBase.add(table[i].get(j).toString()); // Getting the element with all details (i.e. name, course, crn, etc) and adding the elements to ArrayList
+//					CourseDBElement element = table[i].get(j); 
+//					wholeDataBase.add(element.toString()); 
 				}
 			}
 		}
 		
-		return wholeDataBase;
+		return wholeDataBase; // returning the ArrayList
 	}
 
 	@Override
@@ -77,13 +89,20 @@ public class CourseDBStructure extends Object implements CourseDBStructureInterf
 		
 		CourseDBElement finder = new CourseDBElement(); // Creating an object
 		finder.setCRN(crn); // setting the object created with the CRN provided by user
-		int tableSlot = finder.hashCode(); // turning it into it's hashCode
+		int tableSlot = finder.hashCode() % table.length; // turning it into it's hashCode
 		
-		for(int i = 0; i < table.length; i++) // traversing the linked list to see if the CRN is there
+		// Checking to see if there is anything at the position to avoid null pointer error
+		
+		if(table[tableSlot] == null) // Catching this issue helps to avoid crashes and helps JUNit tests.
 		{
-			if(finder.getCRN() == table[tableSlot].get(i).getCRN())
+			throw new IOException();
+		}
+		
+		for(int i = 0; i < table[tableSlot].size(); i++) // traversing the linked list to see if the CRN is there
+		{
+			if(table[tableSlot].get(i).getCRN() == crn) // if the CRN if found and matching to the one provided by user...
 			{
-				return table[tableSlot].get(i); // If it is returning the index
+				return table[tableSlot].get(i); // returning the index
 			}
 		}
 		
@@ -97,9 +116,33 @@ public class CourseDBStructure extends Object implements CourseDBStructureInterf
 		return table.length;
 	}
 	
+	 static boolean isPrime(int num)  // Did using the In-Class Practice
+	 {
+	        if (num < 2) 
+	        {
+	        	return false;
+	        }
+	        	
+	        
+	        for (int i = 2; i * i <= num; i++)
+	        {
+	            if (num % i == 0) return false;
+	        }
+	        
+	        return true;
+	    }
+	
 	public static int get4KPrime(int num)
 	{
-		return 0;
+		while(!isPrime(num) || num % 4 != 3) // if the number is not prime and also doesn't meet the 4k+3 requirements...
+		{
+			num++; // Incrementing the number until it does meet the requirements.
+		}
+		
+		
+		return num; // First value found that meets the requirements is returned.
 	}
+	
+	
 
 }

@@ -33,7 +33,11 @@ public class CourseDBElement implements Comparable<CourseDBElement> // I asked C
 	
 	public CourseDBElement(CourseDBElement element)
 	{
-		
+		this.courseID = element.courseID;
+		this.CRN = element.CRN;
+		this.numberOfCredits = element.numberOfCredits;
+		this.roomNumber = element.roomNumber;
+		this.instructorName = element.instructorName;
 	}
 	
 	// Getters and Setters for the attributes
@@ -122,7 +126,7 @@ public class CourseDBElement implements Comparable<CourseDBElement> // I asked C
 	
 	public String toString()
 	{
-		return "Course:" + courseID + " CRN:" + CRN + " Credits:" + numberOfCredits + " Instructor:" + instructorName + " Room:" + roomNumber + "\n";
+		return "\nCourse:" + courseID + " CRN:" + CRN + " Credits:" + numberOfCredits + " Instructor:" + instructorName + " Room:" + roomNumber;
 	}
 	
 }

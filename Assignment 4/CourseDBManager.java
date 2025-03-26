@@ -31,9 +31,9 @@ public class CourseDBManager extends Object implements CourseDBManagerInterface
 		
 		try 
 		{
-			return CDBS.get(crn);
+			return CDBS.get(crn); // returning the CRN using the get Method created in Structure Class.
 		} 
-		catch (IOException e) 
+		catch (IOException e) // Throwing an exception if the CRN is not in the structure.
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,22 +68,25 @@ public class CourseDBManager extends Object implements CourseDBManagerInterface
 	@Override
 	public ArrayList<String> showAll() 
 	{
-		// TODO Auto-generated method stub
-		ArrayList<String> dataList = new ArrayList<>();
 		
-		for(int i = 0; i < CDBS.getTableSize(); i++)
-		{
-			if(CDBS.table[i] != null)
-			{
-				for(int j = 0; j < CDBS.table[i].size(); j++)
-				{
-					dataList.add(CDBS.table[i].get(j).toString());
-				}
-			}
-		}
+		return CDBS.showAll(); // Calling the showAll function from the structure class
 		
-		return dataList;
-		
+//		// TODO Auto-generated method stub
+//		ArrayList<String> dataList = new ArrayList<>();
+//		
+//		for(int i = 0; i < CDBS.getTableSize(); i++)
+//		{
+//			if(CDBS.table[i] != null)
+//			{
+//				for(int j = 0; j < CDBS.table[i].size(); j++)
+//				{
+//					dataList.add(CDBS.table[i].get(j).toString());
+//				}
+//			}
+//		}
+//		
+//		return dataList;
+//		
 	}
 
 }
