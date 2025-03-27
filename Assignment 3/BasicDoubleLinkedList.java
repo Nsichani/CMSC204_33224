@@ -210,7 +210,7 @@ public class BasicDoubleLinkedList<T>
         
         public boolean hasNext()
         {
-            return current != null;
+            return current.next != null;
         }
         
         // next() method to move onto the next node/position in the list
@@ -223,8 +223,8 @@ public class BasicDoubleLinkedList<T>
             }
             else
             {
-                T data =  current.data;
-                current = current.next;
+                T data =  current.next;
+             //   current = current.next;
                 return data;
             }
         }
