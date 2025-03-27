@@ -53,16 +53,26 @@ public class CourseDBManager extends Object implements CourseDBManagerInterface
 			while(inputFile.hasNextLine()) // Going thought the entire file
 			{
 				String data = inputFile.nextLine(); // Reading the next piece of data
-			
+				String[] dataArray = data.split(" "); // Learned to make an array using the split from https://stackoverflow.com/questions/15903170/read-and-split-a-text-file-java
 				
+				// Adding the information to their corresponding variables.
+				
+				String courseID = dataArray[0];
+				int CRN = Integer.parseInt(dataArray[1]);
+				int numberOfCredits = Integer.parseInt(dataArray[2]);
+				String instructorName = dataArray[3];
+				String roomNumber = dataArray[4];
+				
+				// Adding the variables to an element and adding the element to the structure
+				
+				CourseDBElement element = new CourseDBElement(courseID, CRN, numberOfCredits, instructorName, roomNumber);
+				CDBS.add(element);
 			}	
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-		}
-		
-		
+		}	
 	}
 
 	@Override
