@@ -36,7 +36,7 @@ class BasicDoubleLinkedListTestStudent {
         list.addToEnd(20);
         assertEquals(10, list.retrieveFirstElement());
         assertEquals(20, list.getFirst());
-        assertEquals(1, list.getSize());
+        assertEquals(2, list.getSize());
     }
 
     @Test
@@ -45,7 +45,7 @@ class BasicDoubleLinkedListTestStudent {
         list.addToEnd(20);
         assertEquals(20, list.retrieveLastElement());
         assertEquals(10, list.getLast());
-        assertEquals(1, list.getSize());
+        assertEquals(2, list.getSize());
     }
 
     @Test

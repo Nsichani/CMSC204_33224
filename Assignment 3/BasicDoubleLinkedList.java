@@ -1,137 +1,141 @@
+
 import java.util.*;
 
-public class BasicDoubleLinkedList<T>
+public class BasicDoubleLinkedList<T> implements Iterable
 {
-	// Variables
+	// Class Attributes
 	
-	public Node<T> head;
+	protected Node<T> head;
 	protected Node<T> tail;
-	public int size;
+	protected int size;
 	
-	public BasicDoubleLinkedList() 
+	// Constructor 
+	
+	public BasicDoubleLinkedList()
 	{
-		this.head = null;
-		this.tail = null;
-		int size = 0;
+		head = null;
+		tail = null;
+		size = 0;
 	}
-	
-	// getSize() method to return the size of the list
 	
 	public int getSize()
 	{
 		return size;
 	}
 	
-	// addToEnd() method to add a value to the end of the list
-	
 	public void addToEnd(T data)
 	{
-		Node newNode = new Node(data);
+		
 		
 		if(tail == null)
 		{
-			head = newNode; // assigning the tail to the newNode
-			tail = newNode; // assigning the head to one since if there is no tail there is no head.
+			tail = head = new Node(data); 
 		}
 		else
 		{
-			tail.next = newNode; // assigning the next tail value to the newNode value
-			tail = newNode; // moving the tail to point to the new node.
+			Node endOfList = new Node(data);
+			tail.next = endOfList;
+			endOfList.prev = tail;
+			tail = endOfList;
 		}
+		
 		size++;
 	}
-	
-	// addToFront() method to add a value to the front of the list
 	
 	public void addToFront(T data)
 	{
-		Node newNode = new Node(data);
 		
-		if(head == null) // if there is no head then...
+		
+		if(head == null)
 		{
-			head = newNode; // assigning the head to the newNode
-			tail = newNode; // assigning the tail to one since if there is no head there is no tail.
+			head = tail = new Node(data);
 		}
-		else // if there is a head then...
+		else
 		{
-			newNode.next = head; // assigning the next value of the new node to hold the current value of the head
-			head = newNode; // moving the head to point to the new node
+			Node frontOfList = new Node(data);
+			head.prev = frontOfList;
+			frontOfList.next = head;
+			head = frontOfList;
 		}
+		
 		size++;
 	}
 	
-	// getFirst() method returns the first value in the list
-	
 	public T getFirst()
 	{
-		return  head.data;
+		return head.data;
 	}
-	
-	// getLast() method returns the last value in the list
 	
 	public T getLast()
 	{
 		return tail.data;
 	}
 	
-	// iterator() method that returns the inner iterator class
-	
 	public ListIterator<T> iterator()
 	{
-		return new DoubleLinkedListIterator();
-		
+		return new DoubleLinkedListIterator(head);
 	}
 	
-	// remove() method that removes the first instance of the target data
-	
-
-	public Node<T> remove (T targetData, Comparator<T> comparator)
+	public Node remove(T targetData, Comparator<T> comparator)
 	{
-		 Node<T> current = head;
-		 
-		 for(current = head; current != null; current = current.next) // going through the list
-		 {
-			 if(comparator.compare(targetData, current.data) == 0) // if the data is found then removing it
-			 {
-				 if(current == head) // if its the head value
-				 {
-					 head = head.next; // moving head to the next value aka removing current head pointer
-					 head.prev = null;
-				 }
-			 }
-			 else if (current == tail) // if tail value 
-			 {
-				 tail = tail.prev; // moving tail to previous value and losing pointer to current tail
-				 tail.next = null;
-			 }
-			 else // removing the value from the middle if that is where its located
-			 {
-				 current.prev.next = current.next;
-	             current.next.prev = current.prev;
-			 }
-			 
-			 size--;  // Decrementing size
-	         return current;  
-		 }
-		 
-		 return null; // if i can't find anything returning null
-	
+		// Asked chatgpt to explain we the logic of updating the previous and next reference nodes since I was a bit confused on how the javaDoc wanted use to adjust these
+		
+		Node<T> current = head;
+		
+		for(current = head; current != null; current = current.next) // looping through the list
+		{
+			if(comparator.compare(targetData, current.data) == 0) // if the data is found then removing it
+			{
+				// Updating the targetData nodes previous pointer
+				
+				if(current.prev != null) 
+				{
+					current.prev.next = current.next; // if there is a previous node to the one found then making sure that it jumps over the node we want to remove and connects to the "next next" one
+				}
+				else
+				{
+					head = current.next; // if its the head value moving head to the next node to lose pointer to head
+				}
+				
+				// Updating the targetData nodes next pointer 
+				
+				if(current.next != null)
+				{
+					current.next.prev = current.prev; // if it has a next value making sure to go back to its previous and connect them losing the pointer to current.
+				}
+				else
+				{
+					tail  = current.prev; // if its the tail moving the tail to the previous node to lose pointer to current tail
+				}
+				
+				size--;
+				return new Node<T> (targetData);
+			}
+		}
+		return null;
 	}
 	
-	// retrieveFirstElement() method returns the first value in the list and removes it
-	
-	public T retrieveFirstElement()
+	public T retrieveFirstElement() 
 	{
-		
-		T data = head.data; // assigning the data to the head value
-		head = head.next; // moving head to the next node (essentially getting rid of the current head)
-		
-		size--; // decrement the size
-		return data; // returning the old head prior to removal
+		if(head != null)
+		{
+			Node<T> headData = head;
+			if(head.next != null)
+			{
+				head = head.next;
+				head.prev = null;
+			}
+			else
+			{
+				head = tail = null;
+			}
+			return headData.data;
+		}
+		else
+		{
+			return null;
+		}
 	}
-	
-	
-	// retrieveLastElement() method returns the last value in the list and removes it
 	
 	public T retrieveLastElement()
 	{
@@ -157,11 +161,9 @@ public class BasicDoubleLinkedList<T>
 		}
 	}
 	
-	// toArrayList() method that converts the list to an array list
-	
 	public ArrayList<T> toArrayList()
 	{
-		ArrayList<T> toString = new ArrayList(); // creating a  list to hold all the values
+		ArrayList<T> toString = new ArrayList<>(); // creating a  list to hold all the values
 		Node<T> current = head; // starting at the head for the loop
 		
 		while(current != null)
@@ -173,125 +175,118 @@ public class BasicDoubleLinkedList<T>
 		return toString;
 	}
 	
+	public static class Node<T>
+	{
+		T data;
+		Node prev;
+		Node next;
+		
+		Node(T dataNode)
+		{
+			this.data = dataNode;
+			this.prev = null;
+			this.next = null;
+		}
+	}
 	
-	// Inner Node Class
-	
-    public static class Node<T>
-    {
-        T data; // node to store data
-        Node next; // node to store next value
-        Node prev; // node to store previous value
+	public class DoubleLinkedListIterator implements ListIterator<T>
+	{
+		
+		// Class Attributes
         
-        // Constructor
+        Node<T> head;
+        Node<T> tail;
+        Node<T> current = head;
+
+        // Constructor 
         
-        public Node(T dataNode)
-        {
-            this.data = dataNode;
-            this.next = null;
-            this.prev = null;
-        }
-    }
-    
-    // Inner Iterator Class
-    
-    public  class DoubleLinkedListIterator  implements ListIterator<T>
-    {
-        private Node<T> current; // node to store data currently
-        
-        
-        // Constructor
-        
-        public DoubleLinkedListIterator()
+        public DoubleLinkedListIterator(Node<T> head)
         {
             this.current = head;
+            this.head = head;
         }
         
-        // hasNext() method to check to see if there is a value in the next position.
         
-        public boolean hasNext()
+		@Override
+		public boolean hasNext()
         {
-            return current.next != null;
+            return current != null;
         }
-        
-        // next() method to move onto the next node/position in the list
-        
-        public T next() throws NoSuchElementException
-        {
-            if(!hasNext())
-            {
-                throw new NoSuchElementException();
-            }
-            else
-            {
-                T data =  current.next;
-             //   current = current.next;
-                return data;
-            }
-        }
-        
-        // hasPrevious() method to check to see if there is a value in the previous position.
-        
-        public boolean hasPrevious()
-        {
-        	if(current != null && current.prev != null)
-        	{
-        		return false;
-        	}
-        	else
-        	{
-        		return true;
-        	}
-        }
-        
-        // next() method to move onto the previous node/position in the list
-        
-        public T previous() throws NoSuchElementException
-        {
-        	 if(!hasPrevious())
-             {
-                 throw new NoSuchElementException();
-             }
-             else
-             {
-                 current =  current.prev;
-                 return current.data;
-             }
-        }
-        
-        // All methods that come with the ListIterator that do not need to be implemented as per project guidelines/directions. 
-        
-        public void remove() throws UnsupportedOperationException
-        {
-            throw new UnsupportedOperationException();
-        }
-        
-        public void add(T addData) throws UnsupportedOperationException
-        {
-        	throw new UnsupportedOperationException();
-        }
+
+		@Override
+		public T next() 
+		{
+		 if(!hasNext())
+		 {
+			 throw new NoSuchElementException();
+	     }
+	     else
+	     {
+	    	 T data =  (T) current.data;
+	    	 tail = current;
+	    	 current = current.next;
+	    	 return data;
+	     }
+			
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			// TODO Auto-generated method stub
+			return tail != null;
+		}
+
+		@Override
+		public T previous() 
+		{
+			if(!hasPrevious())
+			{
+				throw new NoSuchElementException();
+			}
+			else
+			{
+				T current = tail.data;
+				tail = tail.prev;
+				return current;
+			}
+		}
 
 		@Override
 		public int nextIndex() throws UnsupportedOperationException
 		{
+			// TODO Auto-generated method stub
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public int previousIndex() throws UnsupportedOperationException
 		{
+			// TODO Auto-generated method stub
 			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void remove() throws UnsupportedOperationException
+		{
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException();
+			
 		}
 
 		@Override
 		public void set(T e) throws UnsupportedOperationException
 		{
+			// TODO Auto-generated method stub
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
+		public void add(T e) throws UnsupportedOperationException
+		{
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException();
+		}
 		
-  
-        
-    }
+	}	
 
-    
 }
