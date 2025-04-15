@@ -23,7 +23,7 @@ public class MorseCodeConverter
 			counter++; // incrementing the counter
 		}
 		
-		return data.toString(); // returning the completed string builder by using toString.
+		return data.toString().trim(); // returning the completed string builder by using toString.
 	}
 	
 	// convertToEnglish method that turns morse code to English text
@@ -65,7 +65,7 @@ public class MorseCodeConverter
 				data.append(inputFile.nextLine());
 			}
 			
-			return data.toString();
+			return convertToEnglish(data.toString());
 		}
 		catch(FileNotFoundException e)
 		{
