@@ -1,107 +1,60 @@
-// Place this script at the end of nima.html
+/* The entire HTML block remains unchanged until the JavaScript script */
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const examForm = document.getElementById('examForm');
-    const findExamButton = document.getElementById('findExam');
-    const examResult = document.getElementById('examResult');
-    const errorMessage = document.getElementById('errorMessage');
-    const examDate = document.getElementById('examDate');
-    const examTime = document.getElementById('examTime');
+  const examForm = document.getElementById('examForm');
+  const findExamButton = document.getElementById('findExam');
+  const examResult = document.getElementById('examResult');
+  const errorMessage = document.getElementById('errorMessage');
+  const examDate = document.getElementById('examDate');
+  const examTime = document.getElementById('examTime');
 
-    const schedule = {
-        "Monday,Wednesday,Friday": {
-            "6:00-7:29am": { date: "May 16, 2025", time: "7-9am" },
-            "7:30-8:54am": { date: "May 12, 2025", time: "8-10am" },
-            "8:55-9:54am": { date: "May 14, 2025", time: "8-10am" },
-            "9:55-10:54am": { date: "May 12, 2025", time: "10:15am-12:15pm" },
-            "10:55-11:54am": { date: "May 14, 2025", time: "10:15am-12:15pm" },
-            "11:55-12:54pm": { date: "May 12, 2025", time: "12:30-2:30pm" },
-            "12:55-1:54pm": { date: "May 14, 2025", time: "12:30-2:30pm" },
-            "1:55-2:54pm": { date: "May 12, 2025", time: "2:45-4:45pm" },
-            "2:55-4:29pm": { date: "May 14, 2025", time: "2:45-4:45pm" },
-            "4:30-5:59pm": { date: "May 12, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 14, 2025", time: "7:15-9:15pm" },
-            "7:20-9:29pm": { date: "May 12, 2025", time: "7:15-9:15pm" }
-        },
-        "Monday,Wednesday": {
-            "6:00-7:29am": { date: "May 16, 2025", time: "7-9am" },
-            "7:30-8:54am": { date: "May 12, 2025", time: "8-10am" },
-            "8:55-9:54am": { date: "May 14, 2025", time: "8-10am" },
-            "9:55-10:54am": { date: "May 12, 2025", time: "10:15am-12:15pm" },
-            "10:55-11:54am": { date: "May 14, 2025", time: "10:15am-12:15pm" },
-            "11:55-12:54pm": { date: "May 12, 2025", time: "12:30-2:30pm" },
-            "12:55-1:54pm": { date: "May 14, 2025", time: "12:30-2:30pm" },
-            "1:55-2:54pm": { date: "May 12, 2025", time: "2:45-4:45pm" },
-            "2:55-4:29pm": { date: "May 14, 2025", time: "2:45-4:45pm" },
-            "4:30-5:59pm": { date: "May 12, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 14, 2025", time: "7:15-9:15pm" },
-            "7:20-9:29pm": { date: "May 12, 2025", time: "7:15-9:15pm" }
-        },
-        "Tuesday,Thursday": {
-            "6:00-7:29am": { date: "May 16, 2025", time: "7-9am" },
-            "7:30-8:54am": { date: "May 13, 2025", time: "8-10am" },
-            "8:55-9:54am": { date: "May 15, 2025", time: "8-10am" },
-            "9:55-10:54am": { date: "May 13, 2025", time: "10:15am-12:15pm" },
-            "10:55-11:54am": { date: "May 15, 2025", time: "10:15am-12:15pm" },
-            "11:55-12:54pm": { date: "May 13, 2025", time: "12:30-2:30pm" },
-            "12:55-1:54pm": { date: "May 15, 2025", time: "12:30-2:30pm" },
-            "1:55-2:54pm": { date: "May 13, 2025", time: "2:45-4:45pm" },
-            "2:55-4:29pm": { date: "May 15, 2025", time: "2:45-4:45pm" },
-            "4:30-5:59pm": { date: "May 13, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 15, 2025", time: "7:15-9:15pm" },
-            "7:20-9:29pm": { date: "May 13, 2025", time: "7:15-9:15pm" }
-        },
-        "Monday": {
-            "4:30-5:59pm": { date: "May 12, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 12, 2025", time: "7:15-9:15pm" },
-            "7:20-9:29pm": { date: "May 12, 2025", time: "7:15-9:15pm" }
-        },
-        "Tuesday": {
-            "4:30-5:59pm": { date: "May 13, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 13, 2025", time: "7:15-9:15pm" },
-            "7:20-9:29pm": { date: "May 13, 2025", time: "7:15-9:15pm" }
-        },
-        "Wednesday": {
-            "4:30-5:59pm": { date: "May 14, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 14, 2025", time: "7:15-9:15pm" }
-        },
-        "Thursday": {
-            "4:30-5:59pm": { date: "May 15, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 15, 2025", time: "7:15-9:15pm" }
-        },
-        "Friday": {
-            "4:30-5:59pm": { date: "May 16, 2025", time: "5-7pm" },
-            "6:00-7:19pm": { date: "May 16, 2025", time: "7:15-9:15pm" }
-        }
-    };
+  const pdfSchedule = {
+    "6:00-7:29am": { date: "May 16, 2025", time: "7-9am" },
+    "7:30-8:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "8-10am" },
+    "8:55-9:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "8-10am" },
+    "9:55-10:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "10:15am-12:15pm" },
+    "10:55-11:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "10:15am-12:15pm" },
+    "11:55-12:54pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "12:30-2:30pm" },
+    "12:55-1:54pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "12:30-2:30pm" },
+    "1:55-2:54pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "2:45-4:45pm" },
+    "2:55-4:29pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "2:45-4:45pm" },
+    "4:30-5:59pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "5-7pm" },
+    "6:00-7:19pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "7:15-9:15pm" },
+    "7:20-9:29pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "7:15-9:15pm" }
+  };
 
-    findExamButton.addEventListener('click', function() {
-        const daysSelected = [...examForm.querySelectorAll('input[name="days"]:checked')].map(input => input.value);
-        const startTime = examForm.querySelector('select[name="startTime"]').value;
+  findExamButton.addEventListener('click', function() {
+    const daysSelected = [...examForm.querySelectorAll('input[name="days"]:checked')].map(input => input.value);
+    const startTime = examForm.querySelector('select[name="startTime"]').value;
 
-        if (daysSelected.length === 0 || !startTime) {
-            errorMessage.style.display = 'block';
-            return;
-        }
-
-        errorMessage.style.display = 'none';
-        const daysKey = normalizeDays(daysSelected);
-        const scheduleEntry = schedule[daysKey]?.[startTime];
-
-        if (scheduleEntry) {
-            examDate.textContent = scheduleEntry.date;
-            examTime.textContent = scheduleEntry.time;
-            examResult.classList.add('show');
-        } else {
-            examDate.textContent = 'Schedule not found.';
-            examTime.textContent = '';
-            examResult.classList.add('show');
-        }
-    });
-
-    function normalizeDays(days) {
-        const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        return days.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b)).join(',');
+    if (daysSelected.length === 0 || !startTime) {
+      errorMessage.style.display = 'block';
+      return;
     }
+
+    errorMessage.style.display = 'none';
+    const normalized = normalizeDays(daysSelected);
+    const key = normalized.key;
+    const firstDay = normalized.first;
+
+    const data = pdfSchedule[startTime];
+    if (data) {
+      const examDay = typeof data.date === 'string' ? data.date : data.date[firstDay.slice(0, 3)];
+      examDate.textContent = `${firstDay}, ${examDay}, 2025`;
+      examTime.textContent = data.time;
+      examResult.style.display = 'block';
+    } else {
+      examDate.textContent = 'Schedule not found.';
+      examTime.textContent = '';
+      examResult.style.display = 'block';
+    }
+  });
+
+  function normalizeDays(days) {
+    const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const sorted = days.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+    return { key: sorted.join(','), first: sorted[0] };
+  }
 });
 </script>
