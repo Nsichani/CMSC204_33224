@@ -1,60 +1,253 @@
-/* The entire HTML block remains unchanged until the JavaScript script */
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const examForm = document.getElementById('examForm');
-  const findExamButton = document.getElementById('findExam');
-  const examResult = document.getElementById('examResult');
-  const errorMessage = document.getElementById('errorMessage');
-  const examDate = document.getElementById('examDate');
-  const examTime = document.getElementById('examTime');
+    document.addEventListener('DOMContentLoaded', function() {
+        const examForm = document.getElementById('examForm');
+        const findExamButton = document.getElementById('findExam');
+        const examResult = document.getElementById('examResult');
+        const errorMessage = document.getElementById('errorMessage');
+        const examDate = document.getElementById('examDate');
+        const examTime = document.getElementById('examTime');
+        
+        findExamButton.addEventListener('click', function() {
+            const daysSelected = [...examForm.querySelectorAll('input[name="days"]:checked')].map(input => input.value);
+            const startTime = examForm.querySelector('select[name="startTime"]').value;
+            
+            if (daysSelected.length === 0 || !startTime) {
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            errorMessage.style.display = 'none';
+            const examSchedule = getExamSchedule(daysSelected, startTime);
+            
+            if (examSchedule) {
+                examDate.textContent = examSchedule.date;
+                examTime.textContent = examSchedule.time;
+                examResult.classList.add('show');
+            }
+        });
+        
+        function getExamSchedule(days, startTime) {
+            // Define exam schedule based on the provided table
+            const examScheduleData = {
+                "6:00-7:29am": {
+                    "Monday": { date: "May 12", time: "7:30am-9:30am" },
+                    "Tuesday": { date: "May 13", time: "7:30am-9:30am" },
+                    "Wednesday": { date: "May 14", time: "7:30am-9:30am" },
+                    "Thursday": { date: "May 15", time: "7:30am-9:30am" },
+                    "Friday": { date: "May 16", time: "7:30am-9:30am" },
+                    "Monday,Wednesday": { date: "May 16", time: "7:30am-9:30am" },
+                    "Tuesday,Thursday": { date: "May 16", time: "7:30am-9:30am" },
+                    "Monday,Wednesday,Friday": { date: "May 16", time: "7:30am-9:30am" },
+                    "MondayOnly": { date: "May 16", time: "7:30am-9:30am" },
+                    "TuesdayOnly": { date: "May 16", time: "7:30am-9:30am" },
+                    "WednesdayOnly": { date: "May 16", time: "7:30am-9:30am" },
+                    "ThursdayOnly": { date: "May 16", time: "7:30am-9:30am" },
+                    "FridayOnly": { date: "May 16", time: "7:30am-9:30am" }
+                },
+                "7:30-8:54am": {
+                    "Monday": { date: "May 12", time: "8:10am-10:10am" },
+                    "Tuesday": { date: "May 13", time: "8:10am-10:10am" },
+                    "Wednesday": { date: "May 14", time: "8:10am-10:10am" },
+                    "Thursday": { date: "May 15", time: "8:10am-10:10am" },
+                    "Friday": { date: "May 16", time: "8:10am-10:10am" },
+                    "Monday,Wednesday": { date: "May 12", time: "8:10am-10:10am" },
+                    "Tuesday,Thursday": { date: "May 13", time: "8:10am-10:10am" },
+                    "Monday,Wednesday,Friday": { date: "May 12", time: "8:10am-10:10am" },
+                    "MondayOnly": { date: "May 12", time: "8:10am-10:10am" },
+                    "TuesdayOnly": { date: "May 13", time: "8:10am-10:10am" },
+                    "WednesdayOnly": { date: "May 14", time: "8:10am-10:10am" },
+                    "ThursdayOnly": { date: "May 15", time: "8:10am-10:10am" },
+                    "FridayOnly": { date: "May 16", time: "8:10am-10:10am" }
+                },
+                "8:55-9:54am": {
+                    "Monday": { date: "May 12", time: "8:10am-10:10am" },
+                    "Tuesday": { date: "May 13", time: "8:10am-10:10am" },
+                    "Wednesday": { date: "May 14", time: "8:10am-10:10am" },
+                    "Thursday": { date: "May 15", time: "8:10am-10:10am" },
+                    "Friday": { date: "May 16", time: "8:10am-10:10am" },
+                    "Monday,Wednesday": { date: "May 14", time: "8:10am-10:10am" },
+                    "Tuesday,Thursday": { date: "May 15", time: "8:10am-10:10am" },
+                    "Monday,Wednesday,Friday": { date: "May 14", time: "8:10am-10:10am" },
+                    "MondayOnly": { date: "May 12", time: "8:10am-10:10am" },
+                    "TuesdayOnly": { date: "May 13", time: "8:10am-10:10am" },
+                    "WednesdayOnly": { date: "May 14", time: "8:10am-10:10am" },
+                    "ThursdayOnly": { date: "May 15", time: "8:10am-10:10am" },
+                    "FridayOnly": { date: "May 16", time: "8:10am-10:10am" }
+                },
+                "9:55-10:54am": {
+                    "Monday": { date: "May 12", time: "10:15am-12:15pm" },
+                    "Tuesday": { date: "May 13", time: "10:15am-12:15pm" },
+                    "Wednesday": { date: "May 14", time: "10:15am-12:15pm" },
+                    "Thursday": { date: "May 15", time: "10:15am-12:15pm" },
+                    "Friday": { date: "May 16", time: "10:15am-12:15pm" },
+                    "Monday,Wednesday": { date: "May 12", time: "10:15am-12:15pm" },
+                    "Tuesday,Thursday": { date: "May 13", time: "10:15am-12:15pm" },
+                    "Monday,Wednesday,Friday": { date: "May 12", time: "10:15am-12:15pm" },
+                    "MondayOnly": { date: "May 12", time: "10:15am-12:15pm" },
+                    "TuesdayOnly": { date: "May 13", time: "10:15am-12:15pm" },
+                    "WednesdayOnly": { date: "May 14", time: "10:15am-12:15pm" },
+                    "ThursdayOnly": { date: "May 15", time: "10:15am-12:15pm" },
+                    "FridayOnly": { date: "May 16", time: "10:15am-12:15pm" }
+                },
+                "10:55-11:54am": {
+                    "Monday": { date: "May 12", time: "10:15am-12:15pm" },
+                    "Tuesday": { date: "May 13", time: "10:15am-12:15pm" },
+                    "Wednesday": { date: "May 14", time: "10:15am-12:15pm" },
+                    "Thursday": { date: "May 15", time: "10:15am-12:15pm" },
+                    "Friday": { date: "May 16", time: "10:15am-12:15pm" },
+                    "Monday,Wednesday": { date: "May 14", time: "10:15am-12:15pm" },
+                    "Tuesday,Thursday": { date: "May 15", time: "10:15am-12:15pm" },
+                    "Monday,Wednesday,Friday": { date: "May 14", time: "10:15am-12:15pm" },
+                    "MondayOnly": { date: "May 12", time: "10:15am-12:15pm" },
+                    "TuesdayOnly": { date: "May 13", time: "10:15am-12:15pm" },
+                    "WednesdayOnly": { date: "May 14", time: "10:15am-12:15pm" },
+                    "ThursdayOnly": { date: "May 15", time: "10:15am-12:15pm" },
+                    "FridayOnly": { date: "May 16", time: "10:15am-12:15pm" }
+                },
+                "11:55-12:54pm": {
+                    "Monday": { date: "May 12", time: "12:30-2:30pm" },
+                    "Tuesday": { date: "May 13", time: "12:30-2:30pm" },
+                    "Wednesday": { date: "May 14", time: "12:30-2:30pm" },
+                    "Thursday": { date: "May 15", time: "12:30-2:30pm" },
+                    "Friday": { date: "May 16", time: "12:30-2:30pm" },
+                    "Monday,Wednesday": { date: "May 12", time: "12:30-2:30pm" },
+                    "Tuesday,Thursday": { date: "May 13", time: "12:30-2:30pm" },
+                    "Monday,Wednesday,Friday": { date: "May 12", time: "12:30-2:30pm" },
+                    "MondayOnly": { date: "May 12", time: "12:30-2:30pm" },
+                    "TuesdayOnly": { date: "May 13", time: "12:30-2:30pm" },
+                    "WednesdayOnly": { date: "May 14", time: "12:30-2:30pm" },
+                    "ThursdayOnly": { date: "May 15", time: "12:30-2:30pm" },
+                    "FridayOnly": { date: "May 16", time: "12:30-2:30pm" }
+                },
+                "12:55-1:54pm": {
+                    "Monday": { date: "May 12", time: "12:30-2:30pm" },
+                    "Tuesday": { date: "May 13", time: "12:30-2:30pm" },
+                    "Wednesday": { date: "May 14", time: "12:30-2:30pm" },
+                    "Thursday": { date: "May 15", time: "12:30-2:30pm" },
+                    "Friday": { date: "May 16", time: "12:30-2:30pm" },
+                    "Monday,Wednesday": { date: "May 14", time: "12:30-2:30pm" },
+                    "Tuesday,Thursday": { date: "May 15", time: "12:30-2:30pm" },
+                    "Monday,Wednesday,Friday": { date: "May 14", time: "12:30-2:30pm" },
+                    "MondayOnly": { date: "May 12", time: "12:30-2:30pm" },
+                    "TuesdayOnly": { date: "May 13", time: "12:30-2:30pm" },
+                    "WednesdayOnly": { date: "May 14", time: "12:30-2:30pm" },
+                    "ThursdayOnly": { date: "May 15", time: "12:30-2:30pm" },
+                    "FridayOnly": { date: "May 16", time: "12:30-2:30pm" }
+                },
+                "1:55-2:54pm": {
+                    "Monday": { date: "May 12", time: "2:45-4:45pm" },
+                    "Tuesday": { date: "May 13", time: "2:45-4:45pm" },
+                    "Wednesday": { date: "May 14", time: "2:45-4:45pm" },
+                    "Thursday": { date: "May 15", time: "2:45-4:45pm" },
+                    "Friday": { date: "May 16", time: "2:45-4:45pm" },
+                    "Monday,Wednesday": { date: "May 12", time: "2:45-4:45pm" },
+                    "Tuesday,Thursday": { date: "May 13", time: "2:45-4:45pm" },
+                    "Monday,Wednesday,Friday": { date: "May 12", time: "2:45-4:45pm" },
+                    "MondayOnly": { date: "May 12", time: "2:45-4:45pm" },
+                    "TuesdayOnly": { date: "May 13", time: "2:45-4:45pm" },
+                    "WednesdayOnly": { date: "May 14", time: "2:45-4:45pm" },
+                    "ThursdayOnly": { date: "May 15", time: "2:45-4:45pm" },
+                    "FridayOnly": { date: "May 16", time: "2:45-4:45pm" }
+                },
+                "2:55-4:29pm": {
+                    "Monday": { date: "May 12", time: "2:45-4:45pm" },
+                    "Tuesday": { date: "May 13", time: "2:45-4:45pm" },
+                    "Wednesday": { date: "May 14", time: "2:45-4:45pm" },
+                    "Thursday": { date: "May 15", time: "2:45-4:45pm" },
+                    "Friday": { date: "May 16", time: "2:45-4:45pm" },
+                    "Monday,Wednesday": { date: "May 14", time: "2:45-4:45pm" },
+                    "Tuesday,Thursday": { date: "May 15", time: "2:45-4:45pm" },
+                    "Monday,Wednesday,Friday": { date: "May 14", time: "2:45-4:45pm" },
+                    "MondayOnly": { date: "May 12", time: "2:45-4:45pm" },
+                    "TuesdayOnly": { date: "May 13", time: "2:45-4:45pm" },
+                    "WednesdayOnly": { date: "May 14", time: "2:45-4:45pm" },
+                    "ThursdayOnly": { date: "May 15", time: "2:45-4:45pm" },
+                    "FridayOnly": { date: "May 16", time: "2:45-4:45pm" }
+                },
+                "4:30-5:59pm": {
+                    "Monday": { date: "May 12", time: "5-7pm" },
+                    "Tuesday": { date: "May 13", time: "5-7pm" },
+                    "Wednesday": { date: "May 14", time: "5-7pm" },
+                    "Thursday": { date: "May 15", time: "5-7pm" },
+                    "Friday": { date: "May 16", time: "5-7pm" },
+                    "Monday,Wednesday": { date: "May 12", time: "5-7pm" },
+                    "Tuesday,Thursday": { date: "May 13", time: "5-7pm" },
+                    "Monday,Wednesday,Friday": { date: "May 12", time: "5-7pm" },
+                    "MondayOnly": { date: "May 12", time: "5-7pm" },
+                    "TuesdayOnly": { date: "May 13", time: "5-7pm" },
+                    "WednesdayOnly": { date: "May 14", time: "5-7pm" },
+                    "ThursdayOnly": { date: "May 15", time: "5-7pm" },
+                    "FridayOnly": { date: "May 16", time: "5-7pm" }
+                },
+                "6:00-7:19pm": {
+                    "Monday": { date: "May 12", time: "7:15-9:15pm" },
+                    "Tuesday": { date: "May 13", time: "7:15-9:15pm" },
+                    "Wednesday": { date: "May 14", time: "7:15-9:15pm" },
+                    "Thursday": { date: "May 15", time: "7:15-9:15pm" },
+                    "Friday": { date: "May 16", time: "7:15-9:15pm" },
+                    "Monday,Wednesday": { date: "May 14", time: "7:15-9:15pm" },
+                    "Tuesday,Thursday": { date: "May 15", time: "7:15-9:15pm" },
+                    "Monday,Wednesday,Friday": { date: "May 14", time: "7:15-9:15pm" },
+                    "MondayOnly": { date: "May 12", time: "7:15-9:15pm" },
+                    "TuesdayOnly": { date: "May 13", time: "7:15-9:15pm" },
+                    "WednesdayOnly": { date: "May 14", time: "7:15-9:15pm" },
+                    "ThursdayOnly": { date: "May 15", time: "7:15-9:15pm" },
+                    "FridayOnly": { date: "May 16", time: "7:15-9:15pm" }
+                },
+                "7:20-9:29pm": {
+                    "Monday": { date: "May 12", time: "7:15-9:15pm" },
+                    "Tuesday": { date: "May 13", time: "7:15-9:15pm" },
+                    "Wednesday": { date: "May 14", time: "7:15-9:15pm" },
+                    "Thursday": { date: "May 15", time: "7:15-9:15pm" },
+                    "Friday": { date: "May 16", time: "7:15-9:15pm" },
+                    "Monday,Wednesday": { date: "May 12", time: "7:15-9:15pm" },
+                    "Tuesday,Thursday": { date: "May 13", time: "7:15-9:15pm" },
+                    "Monday,Wednesday,Friday": { date: "May 12", time: "7:15-9:15pm" },
+                    "MondayOnly": { date: "May 12", time: "7:15-9:15pm" },
+                    "TuesdayOnly": { date: "May 13", time: "7:15-9:15pm" },
+                    "WednesdayOnly": { date: "May 14", time: "7:15-9:15pm" },
+                    "ThursdayOnly": { date: "May 15", time: "7:15-9:15pm" },
+                    "FridayOnly": { date: "May 16", time: "7:15-9:15pm" }
+                }
+            };
 
-  const pdfSchedule = {
-    "6:00-7:29am": { date: "May 16, 2025", time: "7-9am" },
-    "7:30-8:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "8-10am" },
-    "8:55-9:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "8-10am" },
-    "9:55-10:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "10:15am-12:15pm" },
-    "10:55-11:54am": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "10:15am-12:15pm" },
-    "11:55-12:54pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "12:30-2:30pm" },
-    "12:55-1:54pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "12:30-2:30pm" },
-    "1:55-2:54pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "2:45-4:45pm" },
-    "2:55-4:29pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "2:45-4:45pm" },
-    "4:30-5:59pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "5-7pm" },
-    "6:00-7:19pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "7:15-9:15pm" },
-    "7:20-9:29pm": { date: { Mon: "May 12", Tue: "May 13", Wed: "May 14", Thu: "May 15", Fri: "May 16" }, time: "7:15-9:15pm" }
-  };
-
-  findExamButton.addEventListener('click', function() {
-    const daysSelected = [...examForm.querySelectorAll('input[name="days"]:checked')].map(input => input.value);
-    const startTime = examForm.querySelector('select[name="startTime"]').value;
-
-    if (daysSelected.length === 0 || !startTime) {
-      errorMessage.style.display = 'block';
-      return;
-    }
-
-    errorMessage.style.display = 'none';
-    const normalized = normalizeDays(daysSelected);
-    const key = normalized.key;
-    const firstDay = normalized.first;
-
-    const data = pdfSchedule[startTime];
-    if (data) {
-      const examDay = typeof data.date === 'string' ? data.date : data.date[firstDay.slice(0, 3)];
-      examDate.textContent = `${firstDay}, ${examDay}, 2025`;
-      examTime.textContent = data.time;
-      examResult.style.display = 'block';
-    } else {
-      examDate.textContent = 'Schedule not found.';
-      examTime.textContent = '';
-      examResult.style.display = 'block';
-    }
-  });
-
-  function normalizeDays(days) {
-    const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    const sorted = days.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
-    return { key: sorted.join(','), first: sorted[0] };
-  }
-});
+            // Determine the pattern key based on selected days
+            let patternKey;
+            
+            if (daysSelected.length === 1) {
+                patternKey = daysSelected[0] + "Only";
+            } else if (daysSelected.length === 2 && 
+                       ((daysSelected.includes("Monday") && daysSelected.includes("Wednesday")) ||
+                        (daysSelected.includes("Tuesday") && daysSelected.includes("Thursday")))) {
+                if (daysSelected.includes("Monday")) {
+                    patternKey = "Monday,Wednesday";
+                } else {
+                    patternKey = "Tuesday,Thursday";
+                }
+            } else if (daysSelected.length === 3 && 
+                       daysSelected.includes("Monday") && 
+                       daysSelected.includes("Wednesday") && 
+                       daysSelected.includes("Friday")) {
+                patternKey = "Monday,Wednesday,Friday";
+            } else {
+                // For any other combination, use the first day selected
+                patternKey = daysSelected[0];
+            }
+            
+            // Get exam schedule info
+            const examInfo = examScheduleData[startTime][patternKey];
+            
+            if (examInfo) {
+                return {
+                    date: `${examInfo.date}, 2025`,
+                    time: examInfo.time
+                };
+            } else {
+                return {
+                    date: "Schedule not found",
+                    time: "Please check with your instructor"
+                };
+            }
+        }
+    });
 </script>
